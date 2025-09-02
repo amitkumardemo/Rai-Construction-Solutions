@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Construction-themed fonts */
+
+/* Construction-themed Design System */
+@layer base {
+  :root {
+    /* Construction color palette */
+    --background: 0 0% 100%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    /* Deep construction blue */
+    --primary: 215 28% 17%;
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 215 28% 35%;
+
+    /* Concrete grey */
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-light: 215 16% 65%;
+
+    /* Safety orange */
+    --accent: 22 95% 54%;
+    --accent-foreground: 0 0% 98%;
+    --accent-light: 22 95% 64%;
+
+    /* Steel grey */
+    --muted: 215 20% 65%;
+    --muted-foreground: 215 25% 15%;
+    --muted-light: 215 20% 85%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 20% 90%;
+    --input: 215 20% 95%;
+    --ring: 215 28% 17%;
+
+    --radius: 0.75rem;
+    
+    /* Construction gradients */
+    --gradient-construction: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    --gradient-steel: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-light)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary) / 0.95), hsl(var(--secondary) / 0.8));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-light)));
+    
+    /* Construction shadows */
+    --shadow-construction: 0 10px 40px -10px hsl(var(--primary) / 0.4);
+    --shadow-steel: 0 8px 30px -8px hsl(var(--secondary) / 0.3);
+    --shadow-accent: 0 6px 25px -5px hsl(var(--accent) / 0.4);
+    --shadow-soft: 0 4px 20px -4px hsl(var(--muted) / 0.2);
+    
+    /* Animation variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-spring: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 28% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 215 28% 10%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 215 28% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 215 28% 17%;
+    --primary-light: 215 16% 85%;
+
+    --secondary: 215 16% 25%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-light: 215 16% 45%;
+
+    --accent: 22 95% 54%;
+    --accent-foreground: 0 0% 98%;
+    --accent-light: 22 95% 64%;
+
+    --muted: 215 16% 35%;
+    --muted-foreground: 215 20% 75%;
+    --muted-light: 215 16% 55%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 28% 20%;
+    --input: 215 28% 15%;
+    --ring: 0 0% 95%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-montserrat font-semibold;
+  }
+}
+
+/* Construction-themed utility classes */
+@layer utilities {
+  .text-gradient-construction {
+    @apply bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  }
+  
+  .bg-gradient-construction {
+    background: var(--gradient-construction);
+  }
+  
+  .bg-gradient-steel {
+    background: var(--gradient-steel);
+  }
+  
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .bg-gradient-accent {
+    background: var(--gradient-accent);
+  }
+  
+  .shadow-construction {
+    box-shadow: var(--shadow-construction);
+  }
+  
+  .shadow-steel {
+    box-shadow: var(--shadow-steel);
+  }
+  
+  .shadow-accent {
+    box-shadow: var(--shadow-accent);
+  }
+  
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-spring {
+    transition: var(--transition-spring);
+  }
+  
+  .transition-fast {
+    transition: var(--transition-fast);
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+  
+  .animate-bounce-in {
+    animation: bounceIn 0.8s ease-out forwards;
+  }
+}
+
+/* Construction-themed animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hover effects */
+.hover-lift {
+  @apply transition-smooth;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+}
+
+.hover-scale {
+  @apply transition-smooth;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.construction-card {
+  @apply bg-card border border-border/50 rounded-xl p-6 shadow-soft hover-lift;
+  @apply hover:shadow-construction hover:border-primary/20;
+}
+
+.service-card {
+  @apply construction-card relative overflow-hidden;
+  @apply before:absolute before:inset-0 before:bg-gradient-construction before:opacity-0 before:transition-opacity before:duration-500;
+  @apply hover:before:opacity-10;
+}
+
+.project-card {
+  @apply construction-card relative overflow-hidden;
+}
+
+.btn-construction {
+  @apply bg-gradient-construction text-primary-foreground px-8 py-4 rounded-lg font-montserrat font-semibold;
+  @apply shadow-construction hover:shadow-accent transition-smooth;
+  @apply hover:scale-105 hover:bg-gradient-accent;
+}
+
+.btn-outline-construction {
+  @apply border-2 border-primary text-primary px-8 py-4 rounded-lg font-montserrat font-semibold;
+  @apply transition-smooth hover:bg-primary hover:text-primary-foreground hover:shadow-construction;
+}
