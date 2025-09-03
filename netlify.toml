@@ -2,4 +2,5 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  conditions = { "!Path": ["/sitemap.xml", "/robots.txt", "/favicon.ico", "/structured-data.jsonld", "/navigation-structured-data.jsonld"] }
 ~

@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://raiconstructionsolutions.com/sitemap.xml
+Sitemap: https://www.raiconstructionsolutions.com/sitemap.xml
