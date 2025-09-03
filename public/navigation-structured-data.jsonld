@@ -1,0 +1,43 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://raiconstructionsolutions.com/",
+  "name": "Rai Construction Solutions",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://raiconstructionsolutions.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "hasPart": [
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Home",
+      "url": "https://raiconstructionsolutions.com/"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "About",
+      "url": "https://raiconstructionsolutions.com/about"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Services",
+      "url": "https://raiconstructionsolutions.com/services"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Projects",
+      "url": "https://raiconstructionsolutions.com/projects"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Blog",
+      "url": "https://raiconstructionsolutions.com/blog"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "name": "Contact",
+      "url": "https://raiconstructionsolutions.com/contact"
+    }
+  ]
+}

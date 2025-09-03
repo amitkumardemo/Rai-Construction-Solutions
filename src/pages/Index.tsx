@@ -7,10 +7,19 @@ import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import AboutSection from "@/components/AboutSection";
 import BlogSection from "./BlogsSection";
+import SEO from "@/components/SEO";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Rai Construction Solutions - Complete Construction Consultancy Services"
+        description="Leading construction consultancy offering BIM 3D modeling, construction documents, scan to BIM, 3D renders, interior design, and quantity take-off services."
+        keywords="BIM 3D modeling, construction documents, scan to BIM, 3D renders, interior design, quantity take-off, construction consultancy, architectural services"
+        canonical="https://raiconstructionsolutions.com/"
+        ogImage="/logo.png"
+        twitterSite="@raiconstructionsolutions"
+      />
       <Header />
       <main>
         <Hero />

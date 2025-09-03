@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 import service3DModeling from "@/assets/service-3d-modeling.jpg";
 import serviceConstructionDocs from "@/assets/service-construction-docs.jpg";
@@ -109,6 +110,14 @@ const Services = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Our Services - Rai Construction Solutions"
+        description="Comprehensive construction consultancy services including BIM 3D modeling, construction documents, scan to BIM, 3D renders, interior design, and quantity take-off."
+        keywords="BIM 3D modeling, construction documents, scan to BIM, 3D renders, interior design, quantity take-off, construction services"
+        canonical="https://raiconstructionsolutions.com/services"
+        ogImage="/logo.png"
+        twitterSite="@raiconstructionsolutions"
+      />
       <Header />
       <main className="pt-16">
         {/* Hero Section */}

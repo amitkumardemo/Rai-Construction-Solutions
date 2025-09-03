@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import map from "@/assets/map.png"
 import emailjs from "@emailjs/browser";
+import SEO from "@/components/SEO";
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -127,6 +128,14 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen ">
+      <SEO
+        title="Contact Us - Rai Construction Solutions"
+        description="Get in touch with Rai Construction Solutions for expert construction consultancy services. Contact us for BIM 3D modeling, construction documents, and more."
+        keywords="contact Rai Construction Solutions, construction consultancy contact, BIM services contact, construction documents contact"
+        canonical="https://raiconstructionsolutions.com/contact"
+        ogImage="/logo.png"
+        twitterSite="@raiconstructionsolutions"
+      />
       <Header />
       <main className="pt-16">
         {/* Hero Section */}

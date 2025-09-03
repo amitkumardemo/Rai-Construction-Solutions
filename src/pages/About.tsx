@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 import {
   Box,
   FileText,
@@ -111,6 +112,14 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen pt-16">
+      <SEO
+        title="About Us - Rai Construction Solutions"
+        description="Learn about Rai Construction Solutions, your trusted partner in construction consultancy, offering innovative and precise construction services."
+        keywords="construction consultancy, BIM 3D modeling, construction drawings, scan to BIM, 3D renders, interior design, quantity take-off"
+        canonical="https://raiconstructionsolutions.com/about"
+        ogImage="/logo.png"
+        twitterSite="@raiconstructionsolutions"
+      />
       <Header />
       {/* Hero Section */}
       <section className="bg-primary py-16 md:py-24">
