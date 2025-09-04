@@ -18,4 +18,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   base: "./",
+  publicDir: "public",
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 }));
