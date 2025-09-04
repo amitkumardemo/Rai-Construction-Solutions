@@ -98,7 +98,7 @@ const Contact = () => {
 
     emailjs
       .send(
-        "service_qpkvjaa", 
+        "service_g259plp", 
         "template_479pv0r", 
         templateParams,
         "lD0Mvi6Nqbvb1pF01" 
