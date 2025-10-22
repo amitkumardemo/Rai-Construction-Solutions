@@ -11,6 +11,22 @@
       "destination": "/robots.txt"
     },
     {
+      "source": "/favicon.ico",
+      "destination": "/favicon.ico"
+    },
+    {
+      "source": "/logo.png",
+      "destination": "/logo.png"
+    },
+    {
+      "source": "/structured-data.jsonld",
+      "destination": "/structured-data.jsonld"
+    },
+    {
+      "source": "/navigation-structured-data.jsonld",
+      "destination": "/navigation-structured-data.jsonld"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
