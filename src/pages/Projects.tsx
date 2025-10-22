@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 import projectMoonstoneVilla from "@/assets/project-moonstone-villa.jpg";
 import projectTranquilCrest from "@/assets/project-tranquil-crest.jpg";
@@ -12,13 +14,47 @@ import oakridgeenclave from "@/assets/project-okridge-conclave.jpg";
 import verdantvista from "@/assets/project-verdant-vista.jpg";
 import sunsetridge from "@/assets/project-sunset-ridge residence.jpg";
 
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  location: string;
+  year: string;
+  client: string;
+  services: string[];
+  details: string;
+  createdAt: any;
+}
+
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [dynamicProjects, setDynamicProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsVisible(true);
     document.title = "Our Projects - Rai Construction Solutions";
+
+    const fetchProjects = async () => {
+      try {
+        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const projectsData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Project[];
+        setDynamicProjects(projectsData);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   const categories = [
@@ -122,10 +158,13 @@ const Projects = () => {
     },
   ];
 
+  // Combine dynamic projects (from admin) with hardcoded projects
+  const allProjects = [...dynamicProjects, ...projects];
+
   const filteredProjects =
     selectedCategory === "All"
-      ? projects
-      : projects.filter((project) => project.category === selectedCategory);
+      ? allProjects
+      : allProjects.filter((project) => project.category === selectedCategory);
 
   return (
     <div className="min-h-screen">
