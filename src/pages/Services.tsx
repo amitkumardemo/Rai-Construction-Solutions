@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 import service3DModeling from "@/assets/service-3d-modeling.jpg";
 import serviceConstructionDocs from "@/assets/service-construction-docs.jpg";
@@ -13,22 +15,30 @@ import service3DRenders from "@/assets/service-3d-renders.jpg";
 import serviceInteriorDesign from "@/assets/service-interior-design.jpg";
 import serviceQuantityTakeoff from "@/assets/service-quantity-takeoff.jpg";
 
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  features: string[];
+  benefits: string;
+  createdAt: any;
+}
+
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [dynamicServices, setDynamicServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setIsVisible(true);
-    document.title = "Our Services - Rai Construction Solutions";
-  }, []);
-
-  const services = [
+  // Hardcoded services (existing ones)
+  const hardcodedServices = [
     {
       title: "BIM 3D Modeling",
       description: "Transform your construction projects with intelligent 3D models that integrate architectural, structural, and MEP components for seamless planning and execution.",
       image: service3DModeling,
       features: [
         "Architectural BIM Modeling",
-        "Structural BIM Services", 
+        "Structural BIM Services",
         "MEP Coordination Models",
         "Clash Detection & Resolution",
         "Model-based Quantity Take-offs",
@@ -108,6 +118,32 @@ const Services = () => {
     }
   ];
 
+  useEffect(() => {
+    setIsVisible(true);
+    document.title = "Our Services - Rai Construction Solutions";
+
+    const fetchServices = async () => {
+      try {
+        const q = query(collection(db, "services"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const servicesData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Service[];
+        setDynamicServices(servicesData);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  // Combine dynamic services (from admin) with hardcoded services
+  const allServices = [...dynamicServices, ...hardcodedServices];
+
   return (
     <div className="min-h-screen">
       <SEO
@@ -144,7 +180,7 @@ const Services = () => {
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="space-y-20">
-              {services.map((service, index) => (
+              {allServices.map((service, index) => (
                 <div
                   key={index}
                   className={`transition-all duration-1000 delay-${
