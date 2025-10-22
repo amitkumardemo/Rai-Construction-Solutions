@@ -1,19 +1,54 @@
 import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import three from "@/assets/threedmodel.webp";
 import scan from "@/assets/sacn.webp";
 import luxury from "@/assets/luxury.webp";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
+
+interface BlogPost {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  content?: string;
+  type: 'manual' | 'youtube';
+  youtubeUrl?: string;
+  createdAt: any;
+}
 
 const BlogPage = () => {
   const [visibleSections, setVisibleSections] = useState<Set<number>>(
     new Set()
   );
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const posts: BlogPost[] = [];
+        querySnapshot.forEach((doc) => {
+          posts.push({ id: doc.id, ...doc.data() } as BlogPost);
+        });
+        setBlogPosts(posts);
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -37,6 +72,18 @@ const BlogPage = () => {
 
   const setSectionRef = (index: number) => (el: HTMLElement | null) => {
     sectionRefs.current[index] = el;
+  };
+
+  const toggleExpanded = (postId: string) => {
+    setExpandedPosts((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(postId)) {
+        newSet.delete(postId);
+      } else {
+        newSet.add(postId);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -71,6 +118,81 @@ const BlogPage = () => {
 
       {/* Blog Content */}
       <div className="container mx-auto px-4 md:px-16 py-12">
+        {/* Dynamic Blog Posts */}
+        {!loading && blogPosts.map((post, index) => (
+          <article
+            key={post.id}
+            className={`mb-12 transition-all duration-1000 ${
+              visibleSections.has(index)
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-10 scale-95"
+            }`}
+            ref={setSectionRef(index)}
+            data-index={index}
+          >
+            <Card className="w-full shadow-lg hover:shadow-2xl rounded-xl overflow-hidden transition-transform duration-700 hover:-translate-y-2 bg-white">
+              <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10 items-center">
+                <div>
+                  <h2 className="text-3xl font-bold text-[#fd5457] mb-6 leading-tight">
+                    {post.title}
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                    {post.description}
+                  </p>
+
+                  {post.type === 'youtube' && post.youtubeUrl && (
+                    <div className="mt-6">
+                      <div className="aspect-video w-full max-w-4xl mx-auto">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${post.youtubeUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1]}`}
+                          title={post.title}
+                          className="w-full h-full rounded-lg"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    </div>
+                  )}
+
+                  {post.content && (
+                    <div className="mb-6">
+                      {expandedPosts.has(post.id) ? (
+                        <div className="prose max-w-none">
+                          <p className="whitespace-pre-wrap">{post.content}</p>
+                        </div>
+                      ) : (
+                        <p className="text-muted-foreground">
+                          {post.content.length > 200
+                            ? `${post.content.substring(0, 200)}...`
+                            : post.content}
+                        </p>
+                      )}
+                      {post.content.length > 200 && (
+                        <Button
+                          variant="link"
+                          onClick={() => toggleExpanded(post.id)}
+                          className="p-0 h-auto font-semibold text-[#fd5457] hover:text-[#e04447]"
+                        >
+                          {expandedPosts.has(post.id) ? "Read Less" : "Read More"}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative overflow-hidden rounded-xl">
+                  <img
+                    src={post.thumbnail}
+                    alt={post.title}
+                    className="w-full h-80 object-cover transform hover:scale-110 transition-transform duration-700"
+                  />
+                </div>
+              </div>
+            </Card>
+          </article>
+        ))}
+
+        {/* Dummy Blog Posts */}
         {[
           {
             title: "The Impact of 3D Modeling in Construction",
@@ -166,78 +288,81 @@ const BlogPage = () => {
               "By focusing on thoughtful details and styling, you can create a luxurious space on a budget.",
             highlightColor: "border-construction-red",
           },
-        ].map((post, index) => (
-          <article
-            key={index}
-            className={`mb-12 transition-all duration-1000 ${
-              visibleSections.has(index + 1)
-                ? "opacity-100 translate-y-0 scale-100"
-                : "opacity-0 translate-y-10 scale-95"
-            }`}
-            ref={setSectionRef(index + 1)}
-            data-index={index + 1}
-          >
-            <Card className="w-full shadow-lg hover:shadow-2xl rounded-xl overflow-hidden transition-transform duration-700 hover:-translate-y-2 bg-white">
-              <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10 items-center">
-                {index % 2 === 1 && (
-                  <div className="relative overflow-hidden rounded-xl order-1 md:order-2">
-                    <img
-                      src={post.img}
-                      alt={post.title}
-                      className="w-full h-80 object-cover transform hover:scale-110 transition-transform duration-700"
-                    />
-                  </div>
-                )}
+        ].map((post, index) => {
+          const adjustedIndex = blogPosts.length + index;
+          return (
+            <article
+              key={index}
+              className={`mb-12 transition-all duration-1000 ${
+                visibleSections.has(adjustedIndex + 1)
+                  ? "opacity-100 translate-y-0 scale-100"
+                  : "opacity-0 translate-y-10 scale-95"
+              }`}
+              ref={setSectionRef(adjustedIndex + 1)}
+              data-index={adjustedIndex + 1}
+            >
+              <Card className="w-full shadow-lg hover:shadow-2xl rounded-xl overflow-hidden transition-transform duration-700 hover:-translate-y-2 bg-white">
+                <div className="grid md:grid-cols-2 gap-6 p-6 md:p-10 items-center">
+                  {index % 2 === 1 && (
+                    <div className="relative overflow-hidden rounded-xl order-1 md:order-2">
+                      <img
+                        src={post.img}
+                        alt={post.title}
+                        className="w-full h-80 object-cover transform hover:scale-110 transition-transform duration-700"
+                      />
+                    </div>
+                  )}
 
-                <div>
-                  <h2 className="text-3xl font-bold text-[#fd5457] mb-6 leading-tight">
-                    {post.title}
-                  </h2>
-                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                    {post.text}
-                  </p>
-
-                  <div className="space-y-4 mb-8">
-                    {post.points.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start space-x-3 transition-transform hover:translate-x-2 duration-300"
-                      >
-                        <div className="w-2 h-2 bg-construction-red rounded-full mt-2"></div>
-                        <div>
-                          <span className=" text-bold text-[#3d3d3d] font-bold">
-                            {item.title}:
-                          </span>{" "}
-                          <span className="text-muted-foreground">
-                            {item.desc}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div
-                    className={`bg-construction-light p-6 rounded-lg border-l-4 ${post.highlightColor}`}
-                  >
-                    <p className="text-construction-neutral leading-relaxed">
-                      {post.highlight}
+                  <div>
+                    <h2 className="text-3xl font-bold text-[#fd5457] mb-6 leading-tight">
+                      {post.title}
+                    </h2>
+                    <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                      {post.text}
                     </p>
-                  </div>
-                </div>
 
-                {index % 2 === 0 && (
-                  <div className="relative overflow-hidden rounded-xl order-2 md:order-1">
-                    <img
-                      src={post.img}
-                      alt={post.title}
-                      className="w-full h-80 object-cover transform hover:scale-110 transition-transform duration-700"
-                    />
+                    <div className="space-y-4 mb-8">
+                      {post.points.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start space-x-3 transition-transform hover:translate-x-2 duration-300"
+                        >
+                          <div className="w-2 h-2 bg-construction-red rounded-full mt-2"></div>
+                          <div>
+                            <span className=" text-bold text-[#3d3d3d] font-bold">
+                              {item.title}:
+                            </span>{" "}
+                            <span className="text-muted-foreground">
+                              {item.desc}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div
+                      className={`bg-construction-light p-6 rounded-lg border-l-4 ${post.highlightColor}`}
+                    >
+                      <p className="text-construction-neutral leading-relaxed">
+                        {post.highlight}
+                      </p>
+                    </div>
                   </div>
-                )}
-              </div>
-            </Card>
-          </article>
-        ))}
+
+                  {index % 2 === 0 && (
+                    <div className="relative overflow-hidden rounded-xl order-2 md:order-1">
+                      <img
+                        src={post.img}
+                        alt={post.title}
+                        className="w-full h-80 object-cover transform hover:scale-110 transition-transform duration-700"
+                      />
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </article>
+          );
+        })}
       </div>
 
       <Footer />
