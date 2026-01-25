@@ -392,7 +392,7 @@ const AboutUs = () => {
                 Sincerely,
               </p>
               <p className="font-bold text-[#fd5457] text-xl mt-2">
-                Mrinal Rai
+                Rakhi Rai
               </p>
               <p className=" text-[#fd5457]">
                 Founder, Rai Construction Solutions
