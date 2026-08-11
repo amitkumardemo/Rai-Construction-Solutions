@@ -45,7 +45,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Address",
-      details: ["info@raiconstruction.com"],
+      details: ["info@raiconstructionsolutions.com"],
     },
     {
       icon: Clock,
@@ -415,7 +415,7 @@ const Contact = () => {
                   variant="outline"
                   className="btn-outline-construction text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary"
                 >
-                  <a href="mailto:info@raiconstruction.com">
+                  <a href="mailto:info@raiconstructionsolutions.com">
                     <Mail className="mr-2 h-5 w-5" /> Email Us
                   </a>
                 </Button>
